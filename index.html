@@ -1,0 +1,34 @@
+<!DOCTYPE html><!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/--><html><head><title>Liber8tion File Share</title><!-- Custom Theme files--><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><!-- //Custom Theme files--><link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all"><link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css"><script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.8.0/superagent.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha256.js"></script><script>$(document).ready(function() {
+  var username = $('#username');
+  var password = $('#password');
+  var register = $('#register');
+  var form = $('#form');
+
+  function getHash(plaintext) {
+    var pass = (new jsSHA('SHA-256', 'TEXT'))
+    pass.update(password.val())
+    return pass.getHash('HEX');
+  }
+
+  form.on('submit', function(e) {
+    e.preventDefault();
+    superagent.post('/login').query({ username : username.val(), password : getHash(password.val()), uid : '3cf47ed40a02deed1928d76b5ae02270' }).accept('json').end(function(err, res) {
+      if (err) {
+        window.alert(res.body.msg);
+      } else {
+        window.location = res.body.redirect;
+      }
+    });
+  });
+
+  register.on('click', function(e) {
+    e.preventDefault();
+    superagent.post('/register').query({ username : username.val(), password : getHash(password.val()), uid : '3cf47ed40a02deed1928d76b5ae02270' }).accept('json').end(function(err, res) {
+      window.alert(res.body.msg);
+    });
+  });
+});
+</script></head><body><!-- main--><div class="main"><h1>Liber8tion File Share</h1><div class="signin-form"><form id="form"><ul><li><input id="username" type="text" placeholder="User Name" required=""><span class="user"></span></li><li><input id="password" type="password" placeholder="Password" required=""><span class="key"></span></li><li><button id="submit" type="submit">Log in</button><a id="register" href="/register">Register</a></li></ul></form></div></div><div class="copyright"><p>Liber8tion File Share Challenge © 2018 Cyber Skyline | Design by<a href="http://w3layouts.com/" target="_blank"> W3layouts</a></p></div></body></html>
